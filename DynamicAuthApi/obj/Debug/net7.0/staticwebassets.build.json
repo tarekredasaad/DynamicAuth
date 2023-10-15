@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "RMMMkbF3dYQ69505asmzoYZC461fIffmayozaO/OhCQ=",
+  "Source": "DynamicAuthApi",
+  "BasePath": "_content/DynamicAuthApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
