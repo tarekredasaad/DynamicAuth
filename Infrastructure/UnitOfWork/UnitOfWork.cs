@@ -19,6 +19,9 @@ namespace Infrastructure.UnitOfWork
 
         public IRepository<Product> ProductRepository { get; private set; }
 
+        public IRepository<Permission> PermissionRepository { get; private set; }
+
+
 
         //public IRepository<User> Users => throw new NotImplementedException();
 
@@ -27,6 +30,8 @@ namespace Infrastructure.UnitOfWork
             Context = context;
             UserRepository = new Repository<ApplicationUser>(Context);
             ProductRepository = new Repository<Product>(Context);
+            PermissionRepository = new Repository<Permission>(Context);
+
         }
         public void commit() 
         {

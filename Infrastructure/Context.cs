@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
+using Domain.Constants;
 
 namespace Infrastructure
 {
@@ -22,5 +23,14 @@ namespace Infrastructure
         public DbSet<UserGroup> UserGroups  { get; set; }
         public DbSet<Permission> Permissions  { get; set; }
         public DbSet<GroupPermission> GroupPermissions   { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            
+            base.OnModelCreating(builder);
+            builder.Entity<Permission>().HasData(
+                PermissionsModels.FillPermissions()
+            ) ;
+        }
     }
 }

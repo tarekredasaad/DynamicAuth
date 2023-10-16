@@ -52,6 +52,14 @@ namespace DynamicAuthApi
                 {
                     policy.AddRequirements(new GroupPermissionRequirement("CanAddProduct"));
                 });
+                options.AddPolicy("CanEditProduct", policy =>
+                {
+                    policy.AddRequirements(new GroupPermissionRequirement("CanEditProduct"));
+                });
+                options.AddPolicy("CanDeleteProduct", policy =>
+                {
+                    policy.AddRequirements(new GroupPermissionRequirement("CanDeleteProduct"));
+                });
                 // You can add more policies as needed.
             });
 
