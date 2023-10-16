@@ -15,27 +15,37 @@ namespace DynamicAuthApi.Middlewaare
         
         public  async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var endpoint = context.GetEndpoint();
-
-            // Check if the endpoint has the [Authorize] attribute
-            var hasAuthorizeAttribute = endpoint?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
-            if (hasAuthorizeAttribute)
-            {
             await next(context);
+            //var endpoint = context.GetEndpoint();
 
-                if (!context.User.Identity.IsAuthenticated)
+            //var hasAuthorizeAttribute = endpoint?.Metadata.GetMetadata<AuthorizeAttribute>() != null;
+           
+                int statusCode = context.Response.StatusCode;
+
+                switch (statusCode)
                 {
+                    case 200:
+                        
+                        context.Response.ContentType = "text/plain";
+                        await context.Response.WriteAsync("success access.");
+                        break;
 
-                     //await context.Response.WriteAsync("you have to login first");
-                }
-                else
-                {
+                    case 302:
+                       
+                        context.Response.ContentType = "text/plain";
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        await context.Response.WriteAsync("Unauthorized access.");
+                        break;
 
-                    //await context.Response.WriteAsync("unauthorized");
+
+                    default:
+                        context.Response.ContentType = "text/plain";
+                        await context.Response.WriteAsync("Unauthorized access Or default error.");
+ 
+                        break;
+                
                 }
-            }
-            
-            await next(context);
+
 
         }
     }

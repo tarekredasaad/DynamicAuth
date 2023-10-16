@@ -22,7 +22,7 @@ namespace DynamicAuthApi.Controllers
             this.product = product;
         }
 
-        [Authorize(Policy = "AddProduct")]
+        [Authorize(Policy = "GroupPermissionPolicy")]
         [HttpPost]
         public  ActionResult<ResultDTO> AddProduct(ProductDTO productDTO)
         {

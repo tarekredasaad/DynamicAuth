@@ -8,6 +8,8 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DynamicAuthApi.Middlewaare;
+using DynamicAuthApi.AuthorizationRequirement;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DynamicAuthApi
 {
@@ -23,11 +25,13 @@ namespace DynamicAuthApi
                 option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 
             });
-            builder.Services.AddTransient< UnAuthorized>();
+            builder.Services.AddScoped< UnAuthorized>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IProductServicce, ProductServices>();
+            builder.Services.AddScoped<IAuthorizationHandler, GroupPermissionAuthorizationHandler>();
+
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<Context>().AddSignInManager<SignInManager<ApplicationUser>>();
@@ -40,6 +44,11 @@ namespace DynamicAuthApi
                 options.AddPolicy("getuser", policy => {
                     policy.RequireRole("HRM", "Admin");
                 }) ;
+
+                options.AddPolicy("GroupPermissionPolicy", policy =>
+                {
+                    policy.AddRequirements(new GroupPermissionRequirement("CanAddProduct"));
+                });
                 // You can add more policies as needed.
             });
 
