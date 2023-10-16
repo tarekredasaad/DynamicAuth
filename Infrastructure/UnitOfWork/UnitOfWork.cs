@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.UnitOfWork
 {
@@ -29,12 +30,20 @@ namespace Infrastructure.UnitOfWork
         }
         public void commit() 
         {
-            Context.SaveChanges();
+            try
+            {
+                Context.SaveChanges();
+                Context.Database.CurrentTransaction.Commit();
+            }
+            catch
+            {
+                Context.Database.CurrentTransaction.Rollback();
+            }
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Context.Dispose();
         }
     }
 }

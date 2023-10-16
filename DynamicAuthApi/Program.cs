@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using DynamicAuthApi.Middlewaare;
 using DynamicAuthApi.AuthorizationRequirement;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json.Serialization;
 
 namespace DynamicAuthApi
 {
@@ -19,19 +20,21 @@ namespace DynamicAuthApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers().AddJsonOptions(x =>
+               x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             // Add services to the container.
             builder.Services.AddDbContext<Context>(option =>
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 
             });
-            builder.Services.AddScoped< UnAuthorized>();
+            builder.Services.AddTransient< UnAuthorized>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<IProductServicce, ProductServices>();
             builder.Services.AddScoped<IAuthorizationHandler, GroupPermissionAuthorizationHandler>();
-
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<Context>().AddSignInManager<SignInManager<ApplicationUser>>();
@@ -45,7 +48,7 @@ namespace DynamicAuthApi
                     policy.RequireRole("HRM", "Admin");
                 }) ;
 
-                options.AddPolicy("GroupPermissionPolicy", policy =>
+                options.AddPolicy("CanAddProduct", policy =>
                 {
                     policy.AddRequirements(new GroupPermissionRequirement("CanAddProduct"));
                 });

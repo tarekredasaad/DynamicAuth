@@ -22,7 +22,7 @@ namespace DynamicAuthApi.Controllers
             this.product = product;
         }
 
-        [Authorize(Policy = "GroupPermissionPolicy")]
+        [Authorize(Policy = "CanAddProduct")]
         [HttpPost]
         public  ActionResult<ResultDTO> AddProduct(ProductDTO productDTO)
         {
@@ -38,6 +38,8 @@ namespace DynamicAuthApi.Controllers
             return Ok(product);
         }
 
+
+        [Authorize(Policy = "CanEditProduct")]
         [HttpPut]
         public ActionResult update(ProductDTO productDTO , int id) 
         {
@@ -48,6 +50,8 @@ namespace DynamicAuthApi.Controllers
             unitOfWork.commit();
             return Ok(product);
         }
+        
+        [Authorize(Policy = "CanDeleteProduct")]
         [HttpDelete]
         public ActionResult Delete(int id)
         {

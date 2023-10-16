@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Text.Json;
 //using System.Web.Http.Results;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Infrastructure.Services
 {
     public class RoleService : IRoleService
     {
-        private  RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         //private readonly UserManager<IdentityUser> _userManager;
 
         public RoleService(RoleManager<IdentityRole> roleManager

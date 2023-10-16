@@ -27,36 +27,36 @@ namespace DynamicAuthApi.Controllers
             roleManager = RoleManager;
             this.userManager = userManager;
         }
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("addRole")]
         public async Task<ActionResult<ResultDTO>> AddRole(RoleDTO roleDTO)
         {
-            if (User.Identity.IsAuthenticated)
-            {
+            //if (User.Identity.IsAuthenticated)
+            //{
 
-                if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
-                IdentityRole roleModel = new IdentityRole();
-                roleModel.Name = roleDTO.RoleName;
-                IdentityResult result = await roleManager.CreateAsync(roleModel);//unique
-                if (result.Succeeded)
-                {
-                    return Ok(new ResultDTO()
-                    {
-                        StatusCode = 200,
-                        Data = "Role Is Added successfully"
-                    });
-                }
-                else
-                {
-                    return BadRequest(new ResultDTO() { StatusCode = 400, Data = "Invalid operation" });
-                }
-            }
-            else
-            {
-                return Forbid("UnAuthorized");
+            //    if (!ModelState.IsValid) { return BadRequest(new ResultDTO() { StatusCode = 400, Data = ModelState }); };
+            //    IdentityRole roleModel = new IdentityRole();
+            //    roleModel.Name = roleDTO.RoleName;
+            //    IdentityResult result = await roleManager.CreateAsync(roleModel);//unique
+            //    if (result.Succeeded)
+            //    {
+            //        return Ok(new ResultDTO()
+            //        {
+            //            StatusCode = 200,
+            //            Data = "Role Is Added successfully"
+            //        });
+            //    }
+            //    else
+            //    {
+            //        return BadRequest(new ResultDTO() { StatusCode = 400, Data = "Invalid operation" });
+            //    }
+            //}
+            //else
+            //{
+            //    return Forbid("UnAuthorized");
 
-            }
-            //return Ok(roleService.AddRole(roleDTO));
+            //}
+            return Ok(roleService.AddRole(roleDTO));
         }
         [Authorize]
         [HttpPost("addPermission")]
